@@ -33,7 +33,7 @@ public class RankMe {
 		return countScore;
 	}
 	
-	public Event[] getTopSuggestions(String[] topTags) { //ranks events and populates a top-suggestions Event[7]
+	public void getTopSuggestions(String[] topTags) { //ranks events and populates a top-suggestions Event[7]
 		int[] eventIndexRank = new int[allEvents.length];
 		int topRankIndex = 0;
 		int topRankValue = 0;
@@ -52,7 +52,12 @@ public class RankMe {
 			suggestThese[j] = allEvents[index];
 			eventIndexRank[index] = -1; //here
 		}
-		return suggestThese;
+		setTopSuggestions(suggestThese);
+	}
+	public void setTopSuggestions(Event[] tops) {
+		for (int i = 0; i < 7; i++) {
+			this.topSuggestions[i] = tops[i];
+		}
 	}
 	
 	private int findMax(int[] list) {
