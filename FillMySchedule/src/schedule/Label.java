@@ -8,5 +8,5 @@ package schedule;
  *
  */
 public enum Label {
-	WORK, SCHOOL, SLEEP, SOCIAL, SELECTED;
+	WORK, SCHOOL, SLEEP, SOCIAL, SELECTED, REMINDER, SUGGESTION;
 }

@@ -9,16 +9,61 @@ package schedule;
  */
 public class Event {
 	private String name;
-	private int[] date = new int[7];
-	private double cost;
 	private Label label;
 	private String[] keyWords;
+	private String description;
+	private int[] date = new int[7];
+	private double cost;
 	private int durationMins;
 	private int frequencyCount;
 	private TimeUnit frequencyUnit;
-	private String description;
 	private int advanceCount;
 	private TimeUnit advanceUnit;
+	
+	public Event() {}
+	public Event(String name, Label label, String[] keyWords, String description, 
+			int yyyy, int mm, int dd, int sHr, int sMin, int eHr, int eMin,
+			double cost, 
+			int frequencyCount, TimeUnit frequencyUnit, 
+			int advanceCount, TimeUnit advanceUnit) {
+		this.name = name;
+		this.label = label;
+		this.keyWords = keyWords;
+		this.description = description;
+		setDate(yyyy, mm, dd, sHr, sMin, eHr, eMin);
+		setDurationMins();
+		this.cost = cost;
+		this.frequencyCount = frequencyCount;
+		this.frequencyUnit = frequencyUnit;
+		this.advanceCount = advanceCount;
+		this.advanceUnit = advanceUnit;
+	}
+	public Event(String name, Label label, String description, 
+			int yyyy, int mm, int dd, int sHr, int sMin, int eHr, int eMin,
+			int frequencyCount, TimeUnit frequencyUnit, 
+			int advanceCount, TimeUnit advanceUnit) {
+		this(name, label, null, description,
+				yyyy, mm, dd, sHr, sMin, eHr, eMin,
+				0.0, 
+				frequencyCount, frequencyUnit, 
+				advanceCount, advanceUnit);
+	}
+	public Event(String name, Label label, String description, 
+			int yyyy, int mm, int dd, int sHr, int sMin, int eHr, int eMin,
+			int advanceCount, TimeUnit advanceUnit) {
+		this(name, label, null, description,
+				yyyy, mm, dd, sHr, sMin, eHr, eMin,
+				0.0, 
+				0, null, 
+				advanceCount, advanceUnit);
+	}
+	public Event(String name, Label label, String description, 
+			int durationMins, 
+			int advanceCount, TimeUnit advanceUnit) {
+		this(name, label, description,
+				0, 0, 0, 0, 0, 0, 0, 
+				advanceCount, advanceUnit);
+	}
 	/**
 	 * @return the name
 	 */
@@ -30,6 +75,24 @@ public class Event {
 	 */
 	public int[] getDate() {
 		return date;
+	}
+	/**
+	 * @return the year
+	 */
+	public int year() {
+		return date[0];
+	}
+	/**
+	 * @return the month
+	 */
+	public int month() {
+		return date[1];
+	}
+	/**
+	 * @return the day
+	 */
+	public int day() {
+		return date[2];
 	}
 	/**
 	 * @return the cost
@@ -95,7 +158,18 @@ public class Event {
 	 * @param date the date to set
 	 */
 	public void setDate(int[] date) {
-		this.date = date;
+		for(int i = 0; i < 7; i ++) {
+			this.date[i] = date[i];
+		}
+	}
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(int yyyy, int mm, int dd, int startHr, int startMin, int endHr, int endMin) {
+		int[] date = {yyyy, mm, dd, startHr, startMin, endHr, endMin};
+		for(int i = 0; i < 7; i ++) {
+			this.date[i] = date[i];
+		}
 	}
 	/**
 	 * @param cost the cost to set
@@ -118,8 +192,8 @@ public class Event {
 	/**
 	 * @param durationMins the durationMins to set
 	 */
-	public void setDurationMins(int durationMins) {
-		this.durationMins = durationMins;
+	private void setDurationMins() {
+		//TODO:
 	}
 	/**
 	 * @param frequencyCount the frequencyCount to set
