@@ -8,7 +8,11 @@ package schedule;
  *
  */
 public class RankMe {
-	public static int getEventRank(String[] eventKeywords, String[] topTags) {
+	private Event[] allEvents;
+	private Event[] topSuggestions;
+	
+	
+	private int getEventRank(String[] eventKeywords, String[] topTags) {
 		int countScore = 0;
 		for (int i = 0; i < topTags.length; i++) { //i == index of user's topTags
 			for (int j = 0; j < eventKeywords.length; j++) { //j == index of this events keywords
@@ -21,7 +25,7 @@ public class RankMe {
 		return countScore;
 	}
 	
-	public static Event[] getTopSuggestions(Event[] eventOptions, String[] topTags) { //ranks events and populates a top-suggestions Event[7]
+	public Event[] getTopSuggestions(Event[] eventOptions, String[] topTags) { //ranks events and populates a top-suggestions Event[7]
 		int[] eventIndexRank = new int[eventOptions.length];
 		int topRankIndex = 0;
 		int topRankValue = 0;
@@ -43,7 +47,7 @@ public class RankMe {
 		return suggestThese;
 	}
 	
-	public static int findMax(int[] list) {
+	private int findMax(int[] list) {
 		int currentMax = list[0];
 		int maxIndex = 0;
 		for(int i = 0; i < list.length; i++) {
