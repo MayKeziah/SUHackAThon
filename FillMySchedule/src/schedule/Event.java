@@ -10,58 +10,26 @@ package schedule;
 public class Event {
 	private String name;
 	private String[] keyWords;
-	private String description;
 	private Time start;
 	private Time end;
 	private double cost;
 	private int durationMins;
 	private int frequencyCount;
 	private TimeUnit frequencyUnit;
-	private int advanceCount;
-	private TimeUnit advanceUnit;
 	
 	public Event() {}
-	public Event(String name, String[] keyWords, String description, 
+	public Event(String name, String[] keyWords, 
 			Time start, Time end,
 			double cost, 
-			int frequencyCount, TimeUnit frequencyUnit, 
-			int advanceCount, TimeUnit advanceUnit) {
+			int frequencyCount, TimeUnit frequencyUnit) {
 		this.name = name;
 		this.keyWords = keyWords;
-		this.description = description;
 		this.start = start;
 		this.end = end;
 		setDurationMins();
 		this.cost = cost;
 		this.frequencyCount = frequencyCount;
 		this.frequencyUnit = frequencyUnit;
-		this.advanceCount = advanceCount;
-		this.advanceUnit = advanceUnit;
-	}
-	public Event(String name, String description, 
-			Time start, Time end,
-			int frequencyCount, TimeUnit frequencyUnit, 
-			int advanceCount, TimeUnit advanceUnit) {
-		this(name, null, description,
-				start, end, 0.0,
-				frequencyCount, frequencyUnit, 
-				advanceCount, advanceUnit);
-	}
-	public Event(String name, String description, 
-			Time start, Time end,
-			int advanceCount, TimeUnit advanceUnit) {
-		this(name, null, description,
-				start, end,
-				0.0, 
-				0, null, 
-				advanceCount, advanceUnit);
-	}
-	public Event(String name, String description, 
-			int durationMins, 
-			int advanceCount, TimeUnit advanceUnit) {
-		this(name, description,
-				null, null, 
-				advanceCount, advanceUnit);
 	}
 	/**
 	 * @return the name
@@ -111,24 +79,7 @@ public class Event {
 	public TimeUnit getFrequencyUnit() {
 		return frequencyUnit;
 	}
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-	/**
-	 * @return the advanceCount
-	 */
-	public int getAdvanceCount() {
-		return advanceCount;
-	}
-	/**
-	 * @return the advanceUnit
-	 */
-	public TimeUnit getAdvanceUnit() {
-		return advanceUnit;
-	}
+
 	/**
 	 * @param name the name to set
 	 */
@@ -161,7 +112,16 @@ public class Event {
 	 */
 	private int setDurationMins() {
 	    int tempMins = end.getMin() - start.getMin();
-	    int tempHrs = convertMilitaryTime(end.getHour()) - convertMilitaryTime(start.getHour());
+	    int endHour = convertMilitaryTime(end.getHour());
+	    if (tempMins < 0) {
+	    	tempMins += 60;
+	    	endHour -= 1;
+	    }
+	    int dayDiff = end.getDay() - start.getDay();
+	    if (dayDiff > 0) {
+	    	endHour += dayDiff * 24;
+	    }
+	    int tempHrs = endHour - convertMilitaryTime(start.getHour());
 	    tempHrs *= 60;
 	    tempMins += tempHrs;
 	    return tempMins;
@@ -177,24 +137,6 @@ public class Event {
 	 */
 	public void setFrequencyUnit(TimeUnit frequencyUnit) {
 		this.frequencyUnit = frequencyUnit;
-	}
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	/**
-	 * @param advanceCount the advanceCount to set
-	 */
-	public void setAdvanceCount(int advanceCount) {
-		this.advanceCount = advanceCount;
-	}
-	/**
-	 * @param advanceUnit the advanceUnit to set
-	 */
-	public void setAdvanceUnit(TimeUnit advanceUnit) {
-		this.advanceUnit = advanceUnit;
 	}
 	
 }
