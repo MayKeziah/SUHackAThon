@@ -14,11 +14,19 @@ public class RankMe {
 	private Event[] topSuggestions = new Event[7];
 	
 	public RankMe() {}
-	public RankMe(ArrayList<Event> allEvents) {
+	public RankMe(ArrayList<Event> allEvents, Budget budget, String[] topTags) { //change budget to Person.getBudget
+		for (int j = 0; j < allEvents.size(); j++) {
+			if(!budget.canAfford(allEvents.get(j).getCost())){
+				allEvents.remove(j);
+				j--;
+			}
+		}
 		this.allEvents = new Event[allEvents.size()];
 		for (int i = 0; i < allEvents.size(); i++) {
 			this.allEvents[i] = allEvents.get(i);
 		}
+		
+		suggest(topTags);
 	}
 	private int getEventRank(String[] eventKeywords, String[] topTags) {
 		int countScore = 0;
@@ -32,8 +40,10 @@ public class RankMe {
 		
 		return countScore;
 	}
-	
-	public void getTopSuggestions(String[] topTags) { //ranks events and populates a top-suggestions Event[7]
+	public Event[] getTopSuggestions() {
+		return topSuggestions;
+	}
+	private void suggest(String[] topTags) { //ranks events and populates a top-suggestions Event[7]
 		int[] eventIndexRank = new int[allEvents.length];
 		int topRankIndex = 0;
 		int topRankValue = 0;
@@ -54,7 +64,7 @@ public class RankMe {
 		}
 		setTopSuggestions(suggestThese);
 	}
-	public void setTopSuggestions(Event[] tops) {
+	private void setTopSuggestions(Event[] tops) {
 		for (int i = 0; i < 7; i++) {
 			this.topSuggestions[i] = tops[i];
 		}
