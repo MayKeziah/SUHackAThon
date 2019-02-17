@@ -31,6 +31,13 @@ public class Time {
 	public void setAmPm(AmPm amPm) {
 		this.amPm = amPm;
 	}
+	public void switchAmPm() {
+		if (amPm.equals(AmPm.AM)) {
+			setAmPm(AmPm.PM);
+		}else {
+			setAmPm(AmPm.AM);
+		}
+	}
 	/**
 	 * @return the amPm
 	 */

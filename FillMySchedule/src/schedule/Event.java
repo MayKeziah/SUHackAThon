@@ -9,7 +9,6 @@ package schedule;
  */
 public class Event {
 	private String name;
-	private Label label;
 	private String[] keyWords;
 	private String description;
 	private Time start;
@@ -22,13 +21,12 @@ public class Event {
 	private TimeUnit advanceUnit;
 	
 	public Event() {}
-	public Event(String name, Label label, String[] keyWords, String description, 
+	public Event(String name, String[] keyWords, String description, 
 			Time start, Time end,
 			double cost, 
 			int frequencyCount, TimeUnit frequencyUnit, 
 			int advanceCount, TimeUnit advanceUnit) {
 		this.name = name;
-		this.label = label;
 		this.keyWords = keyWords;
 		this.description = description;
 		this.start = start;
@@ -40,28 +38,28 @@ public class Event {
 		this.advanceCount = advanceCount;
 		this.advanceUnit = advanceUnit;
 	}
-	public Event(String name, Label label, String description, 
+	public Event(String name, String description, 
 			Time start, Time end,
 			int frequencyCount, TimeUnit frequencyUnit, 
 			int advanceCount, TimeUnit advanceUnit) {
-		this(name, label, null, description,
-				start, end, 0.0, 
+		this(name, null, description,
+				start, end, 0.0,
 				frequencyCount, frequencyUnit, 
 				advanceCount, advanceUnit);
 	}
-	public Event(String name, Label label, String description, 
+	public Event(String name, String description, 
 			Time start, Time end,
 			int advanceCount, TimeUnit advanceUnit) {
-		this(name, label, null, description,
+		this(name, null, description,
 				start, end,
 				0.0, 
 				0, null, 
 				advanceCount, advanceUnit);
 	}
-	public Event(String name, Label label, String description, 
+	public Event(String name, String description, 
 			int durationMins, 
 			int advanceCount, TimeUnit advanceUnit) {
-		this(name, label, description,
+		this(name, description,
 				null, null, 
 				advanceCount, advanceUnit);
 	}
@@ -88,12 +86,6 @@ public class Event {
 	 */
 	public double getCost() {
 		return cost;
-	}
-	/**
-	 * @return the label
-	 */
-	public Label getLabel() {
-		return label;
 	}
 	/**
 	 * @return the keyWords
@@ -150,12 +142,6 @@ public class Event {
 		this.cost = cost;
 	}
 	/**
-	 * @param label the label to set
-	 */
-	public void setLabel(Label label) {
-		this.label = label;
-	}
-	/**
 	 * @param keyWords the keyWords to set
 	 */
 	public void setKeyWords(String[] keyWords) {
@@ -173,8 +159,12 @@ public class Event {
 	/**
 	 * @param durationMins the durationMins to set
 	 */
-	private void setDurationMins() {
-		//TODO:
+	private int setDurationMins() {
+	    int tempMins = end.getMin() - start.getMin();
+	    int tempHrs = convertMilitaryTime(end.getHour()) - convertMilitaryTime(start.getHour());
+	    tempHrs *= 60;
+	    tempMins += tempHrs;
+	    return tempMins;
 	}
 	/**
 	 * @param frequencyCount the frequencyCount to set
