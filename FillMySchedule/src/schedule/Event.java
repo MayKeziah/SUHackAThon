@@ -12,7 +12,8 @@ public class Event {
 	private Label label;
 	private String[] keyWords;
 	private String description;
-	private int[] date = new int[7];
+	private Time start;
+	private Time end;
 	private double cost;
 	private int durationMins;
 	private int frequencyCount;
@@ -22,7 +23,7 @@ public class Event {
 	
 	public Event() {}
 	public Event(String name, Label label, String[] keyWords, String description, 
-			int yyyy, int mm, int dd, int sHr, int sMin, int eHr, int eMin,
+			Time start, Time end,
 			double cost, 
 			int frequencyCount, TimeUnit frequencyUnit, 
 			int advanceCount, TimeUnit advanceUnit) {
@@ -30,7 +31,8 @@ public class Event {
 		this.label = label;
 		this.keyWords = keyWords;
 		this.description = description;
-		setDate(yyyy, mm, dd, sHr, sMin, eHr, eMin);
+		this.start = start;
+		this.end = end;
 		setDurationMins();
 		this.cost = cost;
 		this.frequencyCount = frequencyCount;
@@ -39,20 +41,19 @@ public class Event {
 		this.advanceUnit = advanceUnit;
 	}
 	public Event(String name, Label label, String description, 
-			int yyyy, int mm, int dd, int sHr, int sMin, int eHr, int eMin,
+			Time start, Time end,
 			int frequencyCount, TimeUnit frequencyUnit, 
 			int advanceCount, TimeUnit advanceUnit) {
 		this(name, label, null, description,
-				yyyy, mm, dd, sHr, sMin, eHr, eMin,
-				0.0, 
+				start, end, 0.0, 
 				frequencyCount, frequencyUnit, 
 				advanceCount, advanceUnit);
 	}
 	public Event(String name, Label label, String description, 
-			int yyyy, int mm, int dd, int sHr, int sMin, int eHr, int eMin,
+			Time start, Time end,
 			int advanceCount, TimeUnit advanceUnit) {
 		this(name, label, null, description,
-				yyyy, mm, dd, sHr, sMin, eHr, eMin,
+				start, end,
 				0.0, 
 				0, null, 
 				advanceCount, advanceUnit);
@@ -61,7 +62,7 @@ public class Event {
 			int durationMins, 
 			int advanceCount, TimeUnit advanceUnit) {
 		this(name, label, description,
-				0, 0, 0, 0, 0, 0, 0, 
+				null, null, 
 				advanceCount, advanceUnit);
 	}
 	/**
@@ -71,28 +72,16 @@ public class Event {
 		return name;
 	}
 	/**
-	 * @return the date
+	 * @return the start
 	 */
-	public int[] getDate() {
-		return date;
+	public Time getStart() {
+		return start;
 	}
 	/**
-	 * @return the year
+	 * @return the start
 	 */
-	public int year() {
-		return date[0];
-	}
-	/**
-	 * @return the month
-	 */
-	public int month() {
-		return date[1];
-	}
-	/**
-	 * @return the day
-	 */
-	public int day() {
-		return date[2];
+	public Time getEnd() {
+		return end;
 	}
 	/**
 	 * @return the cost
@@ -155,23 +144,6 @@ public class Event {
 		this.name = name;
 	}
 	/**
-	 * @param date the date to set
-	 */
-	public void setDate(int[] date) {
-		for(int i = 0; i < 7; i ++) {
-			this.date[i] = date[i];
-		}
-	}
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(int yyyy, int mm, int dd, int startHr, int startMin, int endHr, int endMin) {
-		int[] date = {yyyy, mm, dd, startHr, startMin, endHr, endMin};
-		for(int i = 0; i < 7; i ++) {
-			this.date[i] = date[i];
-		}
-	}
-	/**
 	 * @param cost the cost to set
 	 */
 	public void setCost(double cost) {
@@ -188,6 +160,15 @@ public class Event {
 	 */
 	public void setKeyWords(String[] keyWords) {
 		this.keyWords = keyWords;
+	}
+	/**
+	 * @param hour the hour to convert
+	 */
+	private int convertMilitaryTime(int hour) {
+		if (end.getAmPm().equals(AmPm.PM)) {
+			hour += 12;
+		}
+		return hour;
 	}
 	/**
 	 * @param durationMins the durationMins to set
