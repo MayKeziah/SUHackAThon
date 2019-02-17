@@ -18,10 +18,8 @@ public class Event {
 	private TimeUnit frequencyUnit;
 	
 	public Event() {}
-	public Event(String name, String[] keyWords, 
-			Time start, Time end,
-			double cost, 
-			int frequencyCount, TimeUnit frequencyUnit) {
+	public Event(String name, String[] keyWords, Time start, Time end,
+			double cost, int frequencyCount, TimeUnit frequencyUnit) {
 		this.name = name;
 		this.keyWords = keyWords;
 		this.start = start;
@@ -101,8 +99,9 @@ public class Event {
 	/**
 	 * @param hour the hour to convert
 	 */
-	private int convertMilitaryTime(int hour) {
-		if (end.getAmPm().equals(AmPm.PM)) {
+	private int convertMilitaryTime(Time toCheck) {
+		int hour = toCheck.getHour();
+		if (toCheck.getAmPm().equals(AmPm.PM)) {
 			hour += 12;
 		}
 		return hour;
@@ -110,9 +109,9 @@ public class Event {
 	/**
 	 * @param durationMins the durationMins to set
 	 */
-	private int setDurationMins() {
+	private void setDurationMins() {
 	    int tempMins = end.getMin() - start.getMin();
-	    int endHour = convertMilitaryTime(end.getHour());
+	    int endHour = convertMilitaryTime(end);
 	    if (tempMins < 0) {
 	    	tempMins += 60;
 	    	endHour -= 1;
@@ -121,10 +120,10 @@ public class Event {
 	    if (dayDiff > 0) {
 	    	endHour += dayDiff * 24;
 	    }
-	    int tempHrs = endHour - convertMilitaryTime(start.getHour());
+	    int tempHrs = endHour - convertMilitaryTime(start);
 	    tempHrs *= 60;
 	    tempMins += tempHrs;
-	    return tempMins;
+	    this.durationMins = tempMins;
 	}
 	/**
 	 * @param frequencyCount the frequencyCount to set
