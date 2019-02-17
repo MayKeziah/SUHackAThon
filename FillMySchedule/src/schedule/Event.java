@@ -137,5 +137,8 @@ public class Event {
 	public void setFrequencyUnit(TimeUnit frequencyUnit) {
 		this.frequencyUnit = frequencyUnit;
 	}
+	public String toString() {
+		return name;
+	}
 	
 }
